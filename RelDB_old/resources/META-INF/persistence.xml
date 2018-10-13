@@ -11,4 +11,17 @@
             <property name="javax.persistence.jdbc.password" value="VkJv4T"/>
         </properties>
     </persistence-unit>
+
+    <persistence-unit name="missmatch">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>company.simplest.domain.PersonMissmatch</class>
+        <properties>
+            <property name="javax.persistence.jdbc.driver"
+                      value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:postgresql://10.65.1.37:5433/swd_ws18_03"/>
+            <property name="javax.persistence.jdbc.user" value="swd_ws18_03"/>
+            <property name="javax.persistence.jdbc.password" value="VkJv4T"/>
+        </properties>
+    </persistence-unit>
 </persistence>
