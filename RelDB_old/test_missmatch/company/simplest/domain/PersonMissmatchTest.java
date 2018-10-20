@@ -23,9 +23,9 @@ public class PersonMissmatchTest {
     static EntityManager manager;
     static EntityTransaction transaction;
 
-    static final String persistenceUnitName = "missmatch";
+    static final String persistenceUnitName = "ue2";
 
-    static final int id = 158;
+    static final int id = 162 ;
     static final String name = "John";
     static final String eyecolor = "blue";
     static final int  age = 45000;
@@ -85,18 +85,18 @@ public class PersonMissmatchTest {
         System.out.println("Updated " + john);
     }
 
-    @Test
-    public void remove() {
-        PersonMissmatch john = manager.find(PersonMissmatch.class, id);
-        assertNotNull(john);
-
-        transaction.begin();
-        manager.remove(john);
-        transaction.commit();
-
-        john = manager.find(PersonMissmatch.class, id);
-        assertNull(john);
-
-        System.out.println("Removed " + id);
-    }
+//    @Test
+//    public void remove() {
+//        PersonMissmatch john = manager.find(PersonMissmatch.class, id);
+//        assertNotNull(john);
+//
+//        transaction.begin();
+//        manager.remove(john);
+//        transaction.commit();
+//
+//        john = manager.find(PersonMissmatch.class, id);
+//        assertNull(john);
+//
+//        System.out.println("Removed " + id);
+//    }
 }
