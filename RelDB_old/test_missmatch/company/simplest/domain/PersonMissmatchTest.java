@@ -85,18 +85,18 @@ public class PersonMissmatchTest {
         System.out.println("Updated " + john);
     }
 
-//    @Test
-//    public void remove() {
-//        PersonMissmatch john = manager.find(PersonMissmatch.class, id);
-//        assertNotNull(john);
-//
-//        transaction.begin();
-//        manager.remove(john);
-//        transaction.commit();
-//
-//        john = manager.find(PersonMissmatch.class, id);
-//        assertNull(john);
-//
-//        System.out.println("Removed " + id);
-//    }
+    @Test
+    public void remove() {
+        PersonMissmatch john = manager.find(PersonMissmatch.class, id);
+        assertNotNull(john);
+
+        transaction.begin();
+        manager.remove(john);
+        transaction.commit();
+
+        john = manager.find(PersonMissmatch.class, id);
+        assertNull(john);
+
+        System.out.println("Removed " + id);
+    }
 }

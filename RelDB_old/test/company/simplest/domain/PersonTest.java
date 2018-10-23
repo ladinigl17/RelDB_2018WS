@@ -9,6 +9,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import company.simplest.domain.Person;
+import company.simplest.domain.Person.Color;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -25,11 +28,12 @@ public class PersonTest {
 
     static final String persistenceUnitName = "public";
 
-    static final int id = 158;
+    static final int id = 2;
     static final String name = "John";
     static final String eyecolor = "blue";
     static final int age = 45000;
     static final int height = 1000;
+    static final Color haircolor = Color.red;
 
     @BeforeClass
     public static void setup() {
@@ -54,7 +58,7 @@ public class PersonTest {
     @Test
     public void create() {
         transaction.begin();
-        Person john = new Person(id, name, eyecolor, height, age);
+        Person john = new Person(name, eyecolor, height, age, haircolor);
 //        assertNotNull(john);
         manager.persist(john);
         transaction.commit();
