@@ -9,13 +9,14 @@ public class Building {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	String btype;
-	int fk_address;
+	//int fk_address;
 
 	@OneToOne
     private Address address;
 
-    public void setAddress (Address adress) {
+    public void setAddress (Address address) {
         this.address = address;
+        address.setBuilding(this);
     }
     public Address getAddress() {
         return address;
@@ -24,12 +25,10 @@ public class Building {
 	protected Building(){}
 
 	public Building
-	(int id, String btype, int fk_address)
+	(int id, String btype)
 	{
 		this.id = id;
 		this.btype = btype;
-		this.fk_address = fk_address;
-
 	}
 
 }
