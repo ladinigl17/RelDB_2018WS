@@ -11,16 +11,19 @@ import static org.junit.Assert.*;
 
 
 @org.junit.FixMethodOrder(org.junit.runners.MethodSorters.NAME_ASCENDING)
-public class ManyToOneTest {
+public class ManyToManyTest {
 
     static EntityManagerFactory factory;
     static EntityManager manager;
     static EntityTransaction transaction;
 
-    static final String persistenceUnitName = "ue5_manytoone";
+    static final String persistenceUnitName = "ue6_manytomany";
 
-    static final String address_name = "Herrengasse 5000";
-    static final int address_id = 1;
+    static final String group1_name = "Group A";
+    static final int group1_id = 1;
+    static final String group2_name = "Group B";
+    static final int group2_id = 2;
+
 
     static final int id = 1011;
     static final String name = "John";
@@ -29,38 +32,39 @@ public class ManyToOneTest {
     static final int height = 1000;
 
 
-    static AddressManyToOne address;
-    static PersonManyToOne john;
-    static PersonManyToOne jim;
+    static GroupManyToMany group1;
+    static GroupManyToMany group2;
+    static PersonManyToMany john;
+    static PersonManyToMany jim;
 
 
 
     private static void reset() {
         transaction.begin();
         manager.createNativeQuery(
-                "DELETE FROM ue5_manytoone.person").executeUpdate();
+                "DELETE FROM ue6_manytomany.person").executeUpdate();
         manager.createNativeQuery(
                 "ALTER SEQUENCE person_sequence RESTART").executeUpdate();
         manager.createNativeQuery(
-                "DELETE FROM ue5_manytoone.address").executeUpdate();
+                "DELETE FROM ue6_manytomany.group").executeUpdate();
         transaction.commit();
 
 
     }
 
 
-    public static List<AddressManyToOne> findAllAddresses() {
-        TypedQuery<AddressManyToOne> query = manager.createQuery(
-                "SELECT a FROM AddressManyToOne a"
-                , AddressManyToOne.class);
+    public static List<GroupManyToMany> findAllGroups() {
+        TypedQuery<GroupManyToMany> query = manager.createQuery(
+                "SELECT g FROM GroupManyToMany g"
+                , GroupManyToMany.class);
 
         return query.getResultList();
     }
 
-    public static List<PersonManyToOne> findAllPersons() {
-        TypedQuery<PersonManyToOne> query = manager.createQuery(
-                "SELECT p FROM PersonManyToOne p"
-                , PersonManyToOne.class);
+    public static List<PersonManyToMany> findAllPersons() {
+        TypedQuery<PersonManyToMany> query = manager.createQuery(
+                "SELECT p FROM PersonManyToMany p"
+                , PersonManyToMany.class);
 
         return query.getResultList();
     }
@@ -92,15 +96,18 @@ public class ManyToOneTest {
     @Test
     public void create() {
         transaction.begin();
-        john = new PersonManyToOne(name, eyecolor, height, age);
-        jim = new PersonManyToOne(name, eyecolor, height, age);
-        address = new AddressManyToOne(address_id, address_name);
+        john = new PersonManyToMany(name, eyecolor, height, age);
+        jim = new PersonManyToMany(name, eyecolor, height, age);
+        group1 = new GroupManyToMany(group1_id, group1_name);
+        group2 = new GroupManyToMany(group2_id, group2_name);
         assertNotNull(john);
         assertNotNull(jim);
-        assertNotNull(address);
+        assertNotNull(group1);
+        assertNotNull(group1);
         manager.persist(john);
         manager.persist(jim);
-        manager.persist(address);
+        manager.persist(group1);
+        manager.persist(group2);
         transaction.commit();
 
         System.out.println("Created and Persisted");
@@ -110,30 +117,23 @@ public class ManyToOneTest {
     @Test
     public void join(){
         transaction.begin();
-        john.setAddress(address);
-        jim.setAddress(address);
+        john.addGroup(group1);
+        john.addGroup(group2);
+        jim.addGroup(group1);
         transaction.commit();
     }
 
     @Test(expected = AssertionError.class) //expected Exception because of doubleAss() Test
     public void verify() {
-        john = manager.find(PersonManyToOne.class, id);
+        john = manager.find(PersonManyToMany.class, id);
         assertNotNull(john);
-        jim = manager.find(PersonManyToOne.class, id);
+        jim = manager.find(PersonManyToMany.class, id);
         assertNotNull(jim);
-        List<PersonManyToOne> persons = findAllPersons();
-        assertEquals(2, persons.size());
-        assertEquals(john, persons.get(0));
-        assertEquals(jim, persons.get(1));
-        assertEquals(address, persons.get(0).getAddress());
-        assertEquals(address, persons.get(1).getAddress());
-
-        address = manager.find(AddressManyToOne.class, address_id);
-        assertNotNull(address);
-        List<AddressManyToOne> addresses = findAllAddresses();
-        assertEquals(1, addresses.size());
-        assertEquals(address, addresses.get(0));
-
+        List<PersonManyToMany> persons = findAllPersons();
+        assertTrue(john.getGroups().contains(group1));
+        assertTrue(john.getGroups().contains(group2));
+        assertTrue(jim.getGroups().contains(group1));
+        assertFalse(jim.getGroups().contains(group2));
 
     }
 
