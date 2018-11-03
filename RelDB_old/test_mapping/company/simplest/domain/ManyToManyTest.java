@@ -42,6 +42,8 @@ public class ManyToManyTest {
     private static void reset() {
         transaction.begin();
         manager.createNativeQuery(
+                "DELETE FROM ue6_manytomany.person_group").executeUpdate();
+        manager.createNativeQuery(
                 "DELETE FROM ue6_manytomany.person").executeUpdate();
         manager.createNativeQuery(
                 "ALTER SEQUENCE person_sequence RESTART").executeUpdate();
