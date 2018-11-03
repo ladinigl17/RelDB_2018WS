@@ -16,7 +16,7 @@ public class Building {
 
     public void setAddress (Address address) {
         this.address = address;
-        address.setBuilding(this);
+        this.address.setBuilding(this);
     }
     public Address getAddress() {
         return address;

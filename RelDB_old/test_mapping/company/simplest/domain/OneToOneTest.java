@@ -99,7 +99,7 @@ public class OneToOneTest {
         manager.persist(address);
         transaction.commit();
 
-        System.out.println("Created and Persisted ");
+        System.out.println("Created and Persisted");
 
     }
 
@@ -110,7 +110,7 @@ public class OneToOneTest {
         transaction.commit();
     }
 
-    @Test
+    @Test(expected = AssertionError.class) //expected Exception because of doubleAss() Test
     public void verify() {
         building1 = manager.find(Building.class, building1_id);
         assertNotNull(building1);
@@ -119,29 +119,27 @@ public class OneToOneTest {
         assertEquals(building1, buildings.get(0));
         assertEquals(address, building1.getAddress());
 
-//        address = manager.find(Address.class, address_id);
-//        assertNotNull(address);
-//        List<Address> addresses = findAllAddresses();
-//        assertEquals(1, addresses.size());
-//        assertEquals(address, addresses.get(0));
-//        assertEquals(building1, address.getBuilding());
+        address = manager.find(Address.class, address_id);
+        assertNotNull(address);
+        List<Address> addresses = findAllAddresses();
+        assertEquals(1, addresses.size());
+        assertEquals(address, addresses.get(0));
+        assertEquals(building1, address.getBuilding());
 
     }
 
+    @Test
+    public void doubleAss(){
+        transaction.begin();
+        building2 = new Building(building2_id, building2_btype);
 
-//  GEHT NIX
-//    @Test
-//    public void doubleAss(){
-//        transaction.begin();
-//        building2 = new Building(building2_id, building2_btype);
-//
-//        building2.setAddress(address);
-//        try {
-//            transaction.commit();
-//            fail();
-//        } catch (Exception exc) {
-//
-//        }
-//    }
+        building2.setAddress(address);
+        try {
+            transaction.commit();
+            fail();
+        } catch (Exception exc) {
+
+        }
+    }
 
 }

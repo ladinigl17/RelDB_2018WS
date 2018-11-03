@@ -51,4 +51,18 @@
             <property name="javax.persistence.jdbc.password" value="VkJv4T"/>
         </properties>
     </persistence-unit>
+    <persistence-unit name="ue5_manytoone">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>company.simplest.domain.AddressManyToOne</class>
+        <class>company.simplest.domain.PersonManyToOne</class>
+        <properties>
+            <property name="javax.persistence.jdbc.default_schema" value="ue5_manytoone"/>
+            <property name="javax.persistence.jdbc.driver"
+                      value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:postgresql://10.65.1.37:5433/swd_ws18_03"/>
+            <property name="javax.persistence.jdbc.user" value="swd_ws18_03"/>
+            <property name="javax.persistence.jdbc.password" value="VkJv4T"/>
+        </properties>
+    </persistence-unit>
 </persistence>
